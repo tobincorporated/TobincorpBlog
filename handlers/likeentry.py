@@ -2,9 +2,7 @@ from functools import wraps
 from google.appengine.ext import db
 
 from bloghandler import (BlogHandler, entry_exists, user_logged_in, blog_key)
-from models import User, Entry, Like
-
-
+from models import Entry, Like
 
 class LikeEntry(BlogHandler):
     @user_logged_in
@@ -25,10 +23,11 @@ class LikeEntry(BlogHandler):
                 l = Like(parent=blog_key(), user_id=self.user.key().id(),
                          entry_id=int(entry_id))
                 l.put()
-        if self.request.get('like') == "no":
+                self.redirect('/'+entry_id)
+        else:
             likes = db.GqlQuery("select * from Like where entry_id = " +
                                 entry_id + " and user_id = " +
                                 str(self.user.key().id()))
             for l in likes:
                 l.delete()
-        self.redirect('/'+entry_id)
+            self.redirect('/'+entry_id)

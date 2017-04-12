@@ -20,7 +20,11 @@ A basic blog. Users can
 3. Install Python 2.7
 4. Open the console in the app folder, TobincorpBlog
 5. Launch the App engine with 'dev_appserver.py .'
-6. App can be access through the browswer at http://localhost:8080/
+6. App can be access through the browser at http://localhost:8080/
 
 The live version of this blog can be accessed at:
-https://tobincorp-blog.appspot.com/
+https://tobincorpblog.appspot.com/
+
+
+## License
+This code released under the [MIT License](https://choosealicense.com/licenses/mit)

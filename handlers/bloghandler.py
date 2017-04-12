@@ -4,9 +4,9 @@ import os
 import webapp2
 import hmac
 import jinja2
-
 from models import User, Entry, Like, Comment
 
+# Secret key used for hashing
 secret = 'k8j4dsdf'
 
 template_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ),
@@ -28,6 +28,17 @@ def make_secure_val(val):
 def render_str(template, **params):
     t = jinja_env.get_template(template)
     return t.render(params)
+
+# Decorators used to check validity of user actions
+def user_logged_in(function):
+    @wraps(function)
+    def wrapper(self, *a):
+        if self.user:
+            return function(self, *a)
+        else:
+            self.redirect("/login?error=You must be logged in first")
+            return
+    return wrapper
 
 def entry_exists(function):
     @wraps(function)
@@ -51,16 +62,6 @@ def comment_exists(function):
             return function(self, entry_id, comment_id)
         else:
             self.error(404)
-            return
-    return wrapper
-
-def user_logged_in(function):
-    @wraps(function)
-    def wrapper(self, *a):
-        if self.user:
-            return function(self, *a)
-        else:
-            self.redirect("/login?error=You must be logged in first")
             return
     return wrapper
 
@@ -93,9 +94,8 @@ def user_owns_comment(function):
 
 class BlogHandler(webapp2.RequestHandler):
     """
-    Handles common functions needed for the blog
+    Handles common functions needed for the blog's handlers
     """
-
     def write(self, *a, **kw):
         self.response.out.write(*a, **kw)
 

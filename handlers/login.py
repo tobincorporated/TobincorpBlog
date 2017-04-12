@@ -4,8 +4,6 @@ from google.appengine.ext import db
 from bloghandler import BlogHandler
 from models import User
 
-
-
 class Login(BlogHandler):
     """Page for logging into a user account"""
     def get(self):

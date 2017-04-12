@@ -3,8 +3,6 @@ from google.appengine.ext import db
 from bloghandler import BlogHandler, user_logged_in, blog_key
 from models import Entry
 
-
-
 class NewEntry(BlogHandler):
     """Page for writing a new blog entry"""
     @user_logged_in

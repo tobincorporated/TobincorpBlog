@@ -16,10 +16,6 @@ class EntryPage(BlogHandler):
                                entry_id + " order by created desc")
         likes = db.GqlQuery("select * from Like where entry_id="+entry_id)
 
-        if not entry:
-            self.error(404)
-            return
-
         error = self.request.get('error')
         self.render("permalink.html", entry=entry, numlikes=likes.count(),
                     comments=comments, error=error)
@@ -40,5 +36,4 @@ class EntryPage(BlogHandler):
         comments = db.GqlQuery("select * from Comment where entry_id = " +
                                entry_id + "order by created desc")
         likes = db.GqlQuery("select * from Like where entry_id="+entry_id)
-        self.render("permalink.html", entry=entry,
-                    comments=comments, numlikes=likes.count())
+        self.redirect('/'+entry_id)

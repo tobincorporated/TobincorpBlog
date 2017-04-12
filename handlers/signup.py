@@ -4,7 +4,6 @@ from google.appengine.ext import db
 from bloghandler import BlogHandler
 from models import User
 
-
 # Validation of information
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 EMAIL_RE = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
@@ -18,8 +17,6 @@ def valid_password(password):
 
 def valid_email(email):
     return not email or EMAIL_RE.match(email)
-
-
 
 class Signup(BlogHandler):
     """Page for creating a user account"""
