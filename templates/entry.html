@@ -1,0 +1,8 @@
+
+    <h2>
+        <a href="/{{p.key().id()}}#" >{{p.subject}}</a>
+    </h2>
+
+    <p class="entry-text">{{p._render_text | safe}}</p>
+    <p class="posted-by"> Posted by {{p.getUserName()}} on {{p.created.strftime("%b %d, %Y")}}
+    </p>
