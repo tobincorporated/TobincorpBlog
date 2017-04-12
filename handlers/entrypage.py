@@ -30,27 +30,6 @@ class EntryPage(BlogHandler):
         key = db.Key.from_path('Entry', int(entry_id), parent=blog_key())
         entry = db.get(key)
 
-        #Check if a user clicked a "Like" button
-        if self.request.get('like') == "yes" :
-            likes = db.GqlQuery("select * from Like where entry_id = " +
-                                entry_id + " and user_id = " +
-                                str(self.user.key().id()))
-
-            if self.user.key().id() == entry.user_id:
-                self.redirect("/" + entry_id +
-                              "?error=You cannot like your own entry")
-
-            elif likes.count() == 0:
-                l = Like(parent=blog_key(), user_id=self.user.key().id(),
-                         entry_id=int(entry_id))
-                l.put()
-        if self.request.get('like') == "no":
-            likes = db.GqlQuery("select * from Like where entry_id = " +
-                                entry_id + " and user_id = " +
-                                str(self.user.key().id()))
-            for l in likes:
-                l.delete()
-
         # Check if a user clicked the Comment button
         if self.request.get('comment'):
             c = Comment(parent=blog_key(), user_id=self.user.key().id(),

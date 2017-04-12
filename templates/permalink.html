@@ -15,12 +15,12 @@
 
 <p class="like-text"> Likes: {{numlikes}}</p>
 <div class="like-box">
-    <form method="post" role="form">
+    <form action='/likeentry/{{entry.key().id()}}' role="form">
         <input type="hidden" name="like" value="yes">
         <button type="submit">Like!</button>
     </form>
 
-    <form method="post" role="form">
+    <form action='/likeentry/{{entry.key().id()}}' role="form">
         <input type="hidden" name="like" value="no">
         <button type="submit">Don't Like!</button>
     </form>
