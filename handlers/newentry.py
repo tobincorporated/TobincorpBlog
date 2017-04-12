@@ -1,24 +1,18 @@
 
 from google.appengine.ext import db
-from bloghandler import BlogHandler
-from models import Entry, User
+from bloghandler import BlogHandler, user_logged_in, blog_key
+from models import Entry
 
 
-def blog_key(name='default'):
-    return db.Key.from_path('blogs', name)
 
 class NewEntry(BlogHandler):
     """Page for writing a new blog entry"""
+    @user_logged_in
     def get(self):
-        if self.user:
-            self.render("newentry.html")
-        else:
-            self.redirect("/login")
+        self.render("newentry.html")
 
+    @user_logged_in
     def post(self):
-        if not self.user:
-            self.redirect('/')
-
         subject = self.request.get('subject')
         content = self.request.get('content')
 

@@ -1,16 +1,16 @@
-
+from functools import wraps
 from google.appengine.ext import db
 import os
 import webapp2
 import hmac
 import jinja2
 
-from models import User
-
+from models import User, Entry, Like, Comment
 
 secret = 'k8j4dsdf'
 
-template_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'templates'))
+template_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ),
+                                            '..', 'templates'))
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir),
                                autoescape=True)
 
@@ -28,6 +28,68 @@ def make_secure_val(val):
 def render_str(template, **params):
     t = jinja_env.get_template(template)
     return t.render(params)
+
+def entry_exists(function):
+    @wraps(function)
+    def wrapper(self, entry_id):
+        key = db.Key.from_path('Entry', int(entry_id), parent=blog_key())
+        entry = db.get(key)
+        if entry:
+            return function(self, entry_id)
+        else:
+            self.error(404)
+            return
+    return wrapper
+
+def comment_exists(function):
+    @wraps(function)
+    def wrapper(self, entry_id, comment_id):
+        key = db.Key.from_path('Comment', int(comment_id),
+                               parent=blog_key())
+        comment = db.get(key)
+        if comment:
+            return function(self, entry_id, comment_id)
+        else:
+            self.error(404)
+            return
+    return wrapper
+
+def user_logged_in(function):
+    @wraps(function)
+    def wrapper(self, *a):
+        if self.user:
+            return function(self, *a)
+        else:
+            self.redirect("/login?error=You must be logged in first")
+            return
+    return wrapper
+
+def user_owns_entry(function):
+    @wraps(function)
+    def wrapper(self, entry_id):
+        key = db.Key.from_path('Entry', int(entry_id), parent=blog_key())
+        entry = db.get(key)
+        if entry.user_id == self.user.key().id():
+            return function(self, entry_id)
+        else:
+            self.redirect("/" + entry_id +
+                          "?error=You can't edit someone else's entry")
+            return
+    return wrapper
+
+def user_owns_comment(function):
+    @wraps(function)
+    def wrapper(self, entry_id, comment_id):
+        key = db.Key.from_path('Comment', int(comment_id),
+                               parent=blog_key())
+        comment = db.get(key)
+        if comment.user_id == self.user.key().id():
+            return function(self, entry_id, comment_id)
+        else:
+            self.redirect("/" + entry_id +
+                          "?error=You can't edit someone else's comment")
+            return
+    return wrapper
 
 class BlogHandler(webapp2.RequestHandler):
     """

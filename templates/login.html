@@ -3,33 +3,32 @@
 
 <div class="row">
     <h2>Login</h2>
+    <br>
 
     <form method="post" role="form">
-        <table>
-            <tr>
-                <td>
-                    <label for="username">Username:</label>
-                </td>
-                <td>
-                    <input type="text" name="username" value="{{username}}">
-                </td>
-                <td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="password">Password:</label>
-                </td>
-                <td>
 
-                    <input type="password" name="password" value="" />
-                </td>
-                <td>
-                    {% if error %}
-                      <div class="error">{{error}}</div>
-                    {% endif %}
-                </td>
-            </tr>
-        </table>
+      <div class="form-section">
+        <label for="username">Username:</label>
+        <br>
+
+        <input type="text" name="username" value="{{username}}">
+        <br>
+      </div>
+
+
+
+
+    <div class="form-section">
+      <label for="password">Password:</label>
+      <br>
+      <input type="password" name="password" value="" />
+      {% if error %}
+        <div class="error">{{error}}</div>
+      {% endif %}
+      <br>
+    </div>
+
+
         <br>
         <button type="submit">Submit</button>
     </form>

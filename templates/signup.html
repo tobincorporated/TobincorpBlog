@@ -1,63 +1,49 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
 <h2>Sign Up</h2>
 <form method="post" role="form">
-    <table>
-        <tr>
-            <td>
-                <label for="username">Username:</label>
-            </td>
-            <td>
-                <input type="text" name="username" value="{{username}}">
-            </td>
-            <td>
-                {% if error_username %}
-                  <div class="error">{{error_username}}</div>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="password">Password:</label>
-            </td>
-            <td>
-                <input type="password" name="password" value="">
-            </td>
-            <td>
-                {% if error_password %}
-                  <div class="error">{{error_password}}</div>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="verify">Verify Password:</label>
-            </td>
-            <td>
-                <input type="password" name="verify" value="">
-            </td>
-            <td>
-                {% if error_verify %}
-                  {{error_verify}}
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="email">Email (optional):</label>
-            </td>
-            <td>
-                <input type="email" name="email" value="{{email}}">
-            </td>
-            <td>
-                {% if error_email %}
-                  <div class="error">{{error_email}}</div>
-                {% endif %}
-            </td>
-        </tr>
-    </table>
     <br>
+
+    <div class="form-section">
+      <label for="username">Username:</label>
+      <br>
+      <input type="text" name="username" value="{{username}}">
+      {% if error_username %}
+        <div class="error">{{error_username}}</div>
+      {% endif %}
+      <br>
+    </div>
+
+    <div class="form-section">
+      <label for="password">Password:</label>
+      <br>
+      <input type="password" name="password" value="">
+      {% if error_password %}
+        <div class="error">{{error_password}}</div>
+      {% endif %}
+      <br>
+    </div>
+
+    <div class="form-section">
+      <label for="verify">Verify Password:</label>
+      <br>
+      <input type="password" name="verify" value="">
+       {% if error_verify %}
+        {{error_verify}}
+      {% endif %}
+      <br>
+    </div>
+
+    <div class="form-section">
+      <label for="email">Email (optional):</label>
+      <br>
+      <input type="email" name="email" value="{{email}}">
+      {% if error_email %}
+        <div class="error">{{error_email}}</div>
+      {% endif %}
+      <br>
+    </div>
+
     <button type="submit">Submit</button>
 </form>
 {% endblock %}

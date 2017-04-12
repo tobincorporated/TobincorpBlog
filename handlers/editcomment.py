@@ -1,33 +1,28 @@
-
+from functools import wraps
 from google.appengine.ext import db
 
-from bloghandler import BlogHandler
-from models import User
-from models import Entry
+from bloghandler import (BlogHandler, comment_exists, user_owns_comment,
+                          user_logged_in, blog_key)
 from models import Comment
-
-def blog_key(name='default'):
-    return db.Key.from_path('blogs', name)
-
 
 class EditComment(BlogHandler):
     """Page for editing a comment"""
+    @user_logged_in
+    @comment_exists
+    @user_owns_comment
     def get(self, entry_id, comment_id):
-        if self.user:
-            key = db.Key.from_path('Comment', int(comment_id),
-                                   parent=blog_key())
-            c = db.get(key)
-            if c.user_id == self.user.key().id():
-                self.render("editcomment.html", comment=c.comment)
-            else:
-                self.redirect("/" + entry_id +
-                              "?error=You can't edit someone else's comment")
-        else:
-            self.redirect("/login?error=You must be logged in first")
+        key = db.Key.from_path('Comment', int(comment_id),
+                               parent=blog_key())
+        c = db.get(key)
+        self.render("editcomment.html", comment=c.comment)
 
+    @user_logged_in
+    @comment_exists
+    @user_owns_comment
     def post(self, entry_id, comment_id):
-        if not self.user:
-            self.redirect('/')
+        submitted = self.request.get('submitted')
+        if submitted =='no':
+            self.redirect('/' + entry_id)
 
         comment = self.request.get('comment')
         if comment:

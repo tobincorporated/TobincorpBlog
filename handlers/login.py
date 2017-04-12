@@ -3,11 +3,8 @@ from google.appengine.ext import db
 
 from bloghandler import BlogHandler
 from models import User
-from models import Entry
-from models import Comment
 
-def blog_key(name='default'):
-    return db.Key.from_path('blogs', name)
+
 
 class Login(BlogHandler):
     """Page for logging into a user account"""

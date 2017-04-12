@@ -13,14 +13,20 @@
     <input type="text" name="subject" value="{{subject}}">
 
     <h5>Post Content:</h5>
-    <textarea name="content" value="{{content}}" rows="10" cols="50">{{comment}}</textarea>
+    <textarea name="content" value="{{content}}" rows="10" cols="50">{{content}}</textarea>
 
     {% if error %}
       <div class="error">{{error}}</div>
     {% endif %}
 
     <br>
-    <button type="submit">Submit</button>
+
+        <button type="submit" name="submitted" value="yes">Submit</button>
+        <button type="submit" name="submitted" value="no">Cancel</button>
+    </form>
+
+
+
 </form>
 
 {% endblock %}

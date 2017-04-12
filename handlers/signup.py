@@ -3,11 +3,7 @@ from google.appengine.ext import db
 
 from bloghandler import BlogHandler
 from models import User
-from models import Entry
-from models import Comment
 
-def blog_key(name='default'):
-    return db.Key.from_path('blogs', name)
 
 # Validation of information
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
